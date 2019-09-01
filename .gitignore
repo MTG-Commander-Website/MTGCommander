@@ -17,3 +17,9 @@ wp-content/plugins/hello.php
 /sitemap.xml
 /sitemap.xml.gz
 
+-shoeKey
+shoeKey.ppk
+shoeKey.pub
+*.txt
+Non-webContent/untitled_page.png
+*.epgz
