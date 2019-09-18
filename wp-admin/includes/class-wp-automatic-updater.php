@@ -676,7 +676,7 @@ class WP_Automatic_Updater {
 		switch ( $type ) {
 			case 'success':
 				/* translators: 1: Home URL, 2: WordPress version */
-				$body .= sprintf( __( 'Howdy! Your site at %1$s has been updated automatically to WordPress %2$s.' ), home_url(), $core_update->current );
+				$body .= sprintf( __( 'Hi! Your site at %1$s has been updated automatically to WordPress %2$s.' ), home_url(), $core_update->current );
 				$body .= "\n\n";
 				if ( ! $newer_version_available ) {
 					$body .= __( 'No further action is needed on your part.' ) . ' ';
