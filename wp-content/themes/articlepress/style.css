@@ -694,8 +694,6 @@ a:hover, a:active {
 }
 
 .main-navigation ul ul {
-	-webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
-	        box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
 	float: left;
 	position: absolute;
 	top: 100%;
@@ -790,8 +788,6 @@ a:hover, a:active {
 .screen-reader-text:focus {
 	background-color: #f1f1f1;
 	border-radius: 3px;
-	-webkit-box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
-	        box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
 	clip: auto !important;
 	-webkit-clip-path: none;
 	        clip-path: none;
@@ -1068,8 +1064,6 @@ p {
 
 .btn.focus, .btn:focus {
     outline: none;
-    -webkit-box-shadow: none;
-            box-shadow: none;
 }
 
 img {
@@ -1166,18 +1160,11 @@ section.blog-section {
     transition: all .3s;
     background-color: #fff;
 }
-.blog:hover {
-    -webkit-box-shadow: 0px 0px 10px 2px #b9b6b682;
-            box-shadow: 0px 0px 10px 2px #b9b6b682;
-}
+
 .blog-content {
 	padding: 20px;
-    -webkit-box-shadow: 0 0 19px -2px #e2e2e2;
-            box-shadow: 0 0 19px -2px #e2e2e2;
 }
 .blog-single-left {
-    -webkit-box-shadow: 0 0 19px -2px #e2e2e2;
-            box-shadow: 0 0 19px -2px #e2e2e2;
     padding-bottom: 26px;
 }
 .blog-section .blog {
@@ -1349,7 +1336,7 @@ h3.blog-title {
     margin-bottom: 20px;
 }
 h3.blog-title a {
-    color: #545454;
+    color: #fff;
     text-decoration: none;
     outline: none;
 }
@@ -1357,7 +1344,7 @@ p.blog-text {
     font-size: 18px;
     line-height: 40px;
     font-weight: 400;
-    color: #a09d9d;
+    color: #fff;
 }
 a.btn {
     font-size: 17px;
@@ -1377,6 +1364,7 @@ a.btn.btn-blog:hover {
     background: var( --primary-color );
 }
 .btn-blog {
+    /*TODO: Change background color*/
     background-color: #5bd5e8;
     color: #fff;
     border: 1px solid transparent;
@@ -1575,8 +1563,6 @@ button.btn.btn-blog.form-btn:hover i {
     -o-transition: all 1s;
     transition: all 1s;
     z-index: 6;
-    -webkit-box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
-            box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
     border: 0;
 }
 .articlepress-search-form:hover {
@@ -1626,13 +1612,11 @@ button.btn.btn-blog.form-btn:hover i {
     width: 300px;
     height: 50px;
     outline: none;
-    border: none;
+    border: 1px solid #9c9aa7;
     background: var( --primary-color );
     color: white;
     padding: 0 80px 0 20px;
     border-radius: 30px;
-    -webkit-box-shadow: 0 0 25px 0 #9c9aa7, 0 20px 25px 0 rgba(150, 143, 143, 0.1);
-            box-shadow: 0 0 25px 0 #9c9aa7, 0 20px 25px 0 rgba(150, 143, 143, 0.1);
     -webkit-transition: all 1s;
     -o-transition: all 1s;
     transition: all 1s;
