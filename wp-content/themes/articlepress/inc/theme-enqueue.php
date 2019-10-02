@@ -30,7 +30,7 @@ function articlepress_scripts(){
 	wp_enqueue_style( 'responsive', get_template_directory_uri() . '/assets/css/responsive.css' );
 	
 	// jQuery v3.3.1 -ajax,-aja
-	wp_enqueue_script( 'articlepress-jquery', get_template_directory_uri() . '/assets/js/jquery-3.3.1.slim.min.js', '', '3.3.1', true );
+	wp_enqueue_script( 'articlepress-jquery', get_template_directory_uri() . '/assets/js/jquery-3.4.1.min.js', '', '3.3.1', true );
 
 	// Popper Script
 	wp_enqueue_script( 'articlepress-popper', get_template_directory_uri() . '/assets/js/popper.min.js', 'articlepress-jquery', '1.14.7', true );

@@ -1975,3 +1975,6 @@ p.site-copyright {
     position: relative;
 }
 
+.rss-item {
+    padding: 15px;
+}
