@@ -139,7 +139,6 @@ class RSS_Retriever_Feed {
 	            		$output .= '</li>';
 	            	}
 	            $output .= '</ul>';
-	            $output .= $this->get_credits();
 	        $output .= '</div>';
 	    else :
 	    	$id = 'rss' . substr(str_shuffle(MD5(microtime())), 0, 10);
@@ -277,68 +276,6 @@ class RSS_Retriever_Feed {
 		$output = '';
 
 		return $output;	
-	}
-
-	private function get_credits() {
-		if ($this->settings['credits']) {
-		    $lang = array(
-		        'Theme Mason'                   => __('Theme Mason', 'wp-rss-retriever'),
-		        'thememason.com'                => __('thememason.com', 'wp-rss-retriever'),
-		        'WordPress RSS Feed Retriever'  => __('WordPress RSS Feed Retriever', 'wp-rss-retriever'),
-		        'WordPress RSS Feed'            => __('WordPress RSS Feed', 'wp-rss-retriever'),
-		        'WordPress RSS'                 => __('WordPress RSS', 'wp-rss-retriever'),
-		        'WordPress Feed'                => __('WordPress Feed', 'wp-rss-retriever'),
-		        'RSS Feed WordPress'            => __('RSS Feed WordPress', 'wp-rss-retriever'),
-		        'WordPress RSS Feed Plugin'     => __('WordPress RSS Feed Plugin', 'wp-rss-retriever'),
-		        'RSS Feed Aggregator'           => __('RSS Feed Aggregator', 'wp-rss-retriever'),
-		        'RSS Aggregator'                => __('RSS Aggregator', 'wp-rss-retriever'),
-		        'RSS Feed Plugin'               => __('RSS Feed Plugin', 'wp-rss-retriever'),
-		        'Custom RSS Feed'               => __('Custom RSS Feed', 'wp-rss-retriever'),
-		        'Custom News Feed'              => __('Custom News Feed', 'wp-rss-retriever'),
-		        'Powered'                       => __('Powered', 'wp-rss-retriever'),
-		        'by'                            => __('by', 'wp-rss-retriever'),
-		    );
-
-		    $plugin = array(
-		        array('19'  => $this->concat_credit($lang['WordPress RSS Feed Retriever'] . ' ' . $lang['by'], $lang['Theme Mason'])),
-		        array('10'  => $this->concat_credit($lang['WordPress RSS Feed'] . ' ' . $lang['by'], $lang['Theme Mason'])),
-		        array('9'   => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['Theme Mason'])),
-		        array('9'   => $this->concat_credit($lang['WordPress RSS Feed Retriever'] . ' ' . $lang['by'], $lang['thememason.com'])),
-		        array('5'   => $this->concat_credit($lang['WordPress RSS Feed'] . ' ' . $lang['by'], $lang['thememason.com'])),
-		        array('17'  => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['WordPress RSS Feed Retriever'])),
-		        array('7'   => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['WordPress RSS Feed'])),
-		        array('2'   => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['WordPress RSS'])),
-		        array('1'   => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['WordPress Feed'])),
-		        array('2'   => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['RSS Feed WordPress'])),
-		        array('5'   => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['WordPress RSS Feed Plugin'])),
-		        array('4'   => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['RSS Feed Aggregator'])),
-		        array('1'   => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['RSS Aggregator'])),
-		        array('4'   => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['RSS Feed Plugin'])),
-		        array('3'   => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['Custom RSS Feed'])),
-		        array('2'   => $this->concat_credit($lang['Powered'] . ' ' . $lang['by'], $lang['Custom News Feed'])),
-		    );
-
-		    $newPlugin = array();
-		    foreach ($plugin as $array) {
-		        $newPlugin = array_merge($newPlugin, array_fill(0, key($array), $array[key($array)]));
-		    }
-
-		    mt_srand(crc32(get_bloginfo('url')));
-		    $num = mt_rand(0, count($newPlugin) - 1);
-
-		    $output  = '<div class="wp_rss_retriever_credits">';
-		        $output .= $newPlugin[$num];
-		    $output .= '</div>';
-		} else {
-			$output = null;
-		}
-
-	    return $output;
-	}
-
-	private function concat_credit($prepend, $title) {
-	    $url = 'https://thememason.com/plugins/rss-retriever/';
-	    return $prepend . ' <a href="' . $url . '" title="' . $title . '">' . $title . '</a>';
 	}
 
 	/**

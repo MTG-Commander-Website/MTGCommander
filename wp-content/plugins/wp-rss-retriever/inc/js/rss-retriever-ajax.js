@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			url: rss_retriever.ajax_url,
 			data: {'action':'rss_retriever_ajax_request', 'settings' : feed_settings},
 	      success: function(data) {
-	        resolve(data);
+			  //Within here we can process the data.
+	        resolve(processData(data));
 	      },
 	      error: function(error) {
 	        reject(error);
@@ -31,4 +32,26 @@ document.addEventListener('DOMContentLoaded', function() {
 	    })
 	  })
 	};
+
+	function processData(data){
+		let items = data.split('<div class="widget rss-item">');
+		//Put header data into the final data.
+		let finalData = items[0];
+		//save footer data for later
+		let footerData = items[items.length-1];
+
+		items.forEach((item, index)=>{
+				//Sort by Date?
+				let itemTitle = item.split('<a class="wp_rss_retriever_title"')[1];
+				itemTitle = itemTitle.split('>')[0];
+				if(item.includes("commander") || item.includes("Commander") || item.includes("COMMANDER") || item.includes("EDH") || item.includes("dhrec")){	
+					item = item.replace('&lt;sup&gt;&amp;reg;&lt;/sup&gt;', '');
+					finalData += '<div class="widget rss-item">';
+					finalData += item;
+				}
+				//Possibly put in an image if none exsists
+		});
+		finalData += footerData;
+		return finalData;
+	}
 });
