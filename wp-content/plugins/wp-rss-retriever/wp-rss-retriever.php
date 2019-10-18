@@ -73,7 +73,7 @@ add_shortcode( 'wp_rss_retriever', 'wp_rss_retriever_func' );
 function wp_rss_retriever_func( $atts ){
     $parsed_attributes = shortcode_atts( array(
         'url' => '#',
-        'items' => '10',
+        'items' => '1000000',
         'orderby' => 'default',
         'title' => 'true',
         'excerpt' => '20',

@@ -1178,7 +1178,7 @@ function populate_network_meta( $network_id, array $meta = array() ) {
 
 	/* translators: Do not translate USERNAME, SITE_NAME, BLOG_URL, PASSWORD: those are placeholders. */
 	$welcome_email = __(
-		'Hi USERNAME,
+		'Howdy USERNAME,
 
 Your new SITE_NAME site has been successfully set up at:
 BLOG_URL

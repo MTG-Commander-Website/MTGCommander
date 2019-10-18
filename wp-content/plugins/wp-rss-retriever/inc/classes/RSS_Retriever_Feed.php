@@ -58,10 +58,15 @@ class RSS_Retriever_Feed {
 		    if (!is_wp_error( $rss ) && !@$rss->get_item_quantity( $this->settings['items'] ) == 0) {
 		    	$rss_items = $rss->get_items( 0, $this->settings['items'] );
 		    	$rss_items = $this->orderby_sort($rss_items);
-
+				$filter=array("commander", "Commander", "COMMANDER", "EDH", "Edhrec", "EDHREC");
 		    	foreach($rss_items as $item) {
-		    		$item_object = new RSS_Retriever_Feed_Item($item, $this->settings);
+					foreach($filter as $token){
+						if(stristr($item->get_permalink(), $token) !== false){
+						$item_object = new RSS_Retriever_Feed_Item($item, $this->settings);
 		    		$this->feed_items[] = $item_object;
+						break;
+							}
+							}		    		
 		    	}
 
 		    	$this->set_cached_feed();

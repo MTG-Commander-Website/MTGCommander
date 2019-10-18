@@ -1241,7 +1241,7 @@ function update_option_new_admin_email( $old_value, $value ) {
 
 	/* translators: Do not translate USERNAME, ADMIN_URL, EMAIL, SITENAME, SITEURL: those are placeholders. */
 	$email_text = __(
-		'Hi ###USERNAME###,
+		'Howdy ###USERNAME###,
 
 You recently requested to have the administration email address on
 your site changed.

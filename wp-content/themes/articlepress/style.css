@@ -1,10 +1,10 @@
 /*!
 Theme Name: ArticlePress
-Theme URI: https://item.themeasia.net/articlepress/
+Theme URI: https://articlepress.pro
 Author: ThemeAsia
 Author URI: https://themeasia.net
 Description: ArticlePress Is Clean and Modern design WordPress Blog Theme that let you build an exclusive website for Blog, Magazine, affiliate Site or any blogs site. Try this theme today, you will never think about alternatives.
-Version: 1.1.9
+Version: 1.2.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html 
 Text Domain: articlepress
@@ -66,6 +66,16 @@ Css validation Fix
 Version 1.0.9
 Improve Style
 
+Version1.1.10
+Improve Ui
+
+Version 1.1.11
+Bug Fix
+
+Version 1.2.0
+Change Comments Design
+Improve design
+
 -------------------------------------------------*/
 
 
@@ -98,6 +108,10 @@ Improve Style
 /**
  * Remove the margin in all browsers.
  */
+:root {
+    --primary-color: #7660ff;
+    --primary-dark: #3b566e;
+}
 body {
 	margin: 0;
 }
@@ -438,10 +452,6 @@ textarea {
 	line-height: 1.5;
 }
 
-.entry-title{
-		color: #fff;
-}
-
 h1, h2, h3, h4, h5, h6 {
 	clear: both;
 }
@@ -657,12 +667,12 @@ textarea {
 /*--------------------------------------------------------------
 ## Links
 --------------------------------------------------------------*/
-a {
-	color: royalblue;
+a:visited {
+    color: #7660ff;
 }
 
-a:visited {
-	color: purple;
+a {
+    color: #7660ff;
 }
 
 a:hover, a:focus, a:active {
@@ -694,6 +704,8 @@ a:hover, a:active {
 }
 
 .main-navigation ul ul {
+	-webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+	        box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
 	float: left;
 	position: absolute;
 	top: 100%;
@@ -788,6 +800,8 @@ a:hover, a:active {
 .screen-reader-text:focus {
 	background-color: #f1f1f1;
 	border-radius: 3px;
+	-webkit-box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+	        box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
 	clip: auto !important;
 	-webkit-clip-path: none;
 	        clip-path: none;
@@ -1064,6 +1078,8 @@ p {
 
 .btn.focus, .btn:focus {
     outline: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
 }
 
 img {
@@ -1131,7 +1147,7 @@ a.articlepress-logo-text {
 	color: #fff;
     text-decoration: none;
 }
-.navbar-brand {
+.navbar-brand:focus {
     outline: none;
 }
 .navbar button.navbar-toggler {
@@ -1160,12 +1176,14 @@ section.blog-section {
     transition: all .3s;
     background-color: #fff;
 }
-
+.blog:hover {
+    -webkit-box-shadow: 0px 0px 10px 2px #b9b6b682;
+            box-shadow: 0px 0px 10px 2px #b9b6b682;
+}
 .blog-content {
 	padding: 20px;
-}
-.blog-single-left {
-    padding-bottom: 26px;
+    -webkit-box-shadow: 0 0 19px -2px #e2e2e2;
+            box-shadow: 0 0 19px -2px #e2e2e2;
 }
 .blog-section .blog {
     margin-bottom: 30px;
@@ -1201,6 +1219,7 @@ nav.navigation.post-navigation .nav-links a:hover {
 }
 .comments-area {
     padding: 0 24px;
+    margin-top: 30px;
 }
 h2.comments-count {
     font-size: 20px;
@@ -1242,22 +1261,31 @@ h2.comments-count:before {
 .comment-body span.says {
     color: #a2a2a2;
 }
-
+#comments div#respond {
+    margin-top: 25px;
+}
 .comment-body .comment-metadata a time {
     font-weight: 600;
     font-size: 14px;
     text-decoration: none !important;
-    color: #8d89a7;
+    color: var(--primary-dark);
+    display: inline-block;
+    transform: translateY(-31px);
+    margin-left: 49px;
 }
-
 .comment-body .comment-metadata a {
     display: inline-block;
     margin-top: 8px;
 }
 
 .comment-body .comment-metadata a.comment-edit-link {
+    margin-left: 6px;
     font-size: 15px;
     font-weight: 600;
+    transform: translateY(-30px);
+    color: #7660ff;
+    text-transform: uppercase;
+    text-decoration: none;
 }
 
 .comment-list > li.comment.byuser {
@@ -1275,6 +1303,11 @@ h2.comments-count:before {
     color: #5bd5e8;
     font-size: 15px;
     margin-bottom: 16px;
+    font-size: 20px;
+    text-decoration: none;
+    color: #7660ff;
+    text-transform: uppercase;
+    border-bottom: 2px solid #7660ff;
 }
 
 .comment-content p {
@@ -1306,7 +1339,12 @@ footer.comment-meta img {
     margin-top: 23px;
 }
 
-
+.form-control:focus {
+    outline: 0;
+    box-shadow: 0 0 10px #d2d2d2;
+    transition: .3s;
+    border-color: transparent;
+}
 
 
 
@@ -1336,7 +1374,7 @@ h3.blog-title {
     margin-bottom: 20px;
 }
 h3.blog-title a {
-    color: #fff;
+    color: #545454;
     text-decoration: none;
     outline: none;
 }
@@ -1344,7 +1382,7 @@ p.blog-text {
     font-size: 18px;
     line-height: 40px;
     font-weight: 400;
-    color: #fff;
+    color: #a09d9d;
 }
 a.btn {
     font-size: 17px;
@@ -1364,7 +1402,6 @@ a.btn.btn-blog:hover {
     background: var( --primary-color );
 }
 .btn-blog {
-    /*TODO: Change background color*/
     background-color: #5bd5e8;
     color: #fff;
     border: 1px solid transparent;
@@ -1417,9 +1454,11 @@ button.search-btn i {
 }
 
 h2.widget-title {
+    background-color: var( --primary-color );
     padding: 20px 0;
     font-size: 20px;
     padding-left: 20px;
+    color: #fff;
 }
 .widget {
     border: 1px solid #eae6e6;
@@ -1471,7 +1510,7 @@ section#search-2 {margin-bottom: 70px;}
     color: #5bd5e8;
 }
 .widget ul li:before {
-    content: '›';
+    content: '\203A';
     position: absolute;
     font-size: 23px;
     line-height: 21px;
@@ -1508,6 +1547,9 @@ h2.single-page-title {
 .single-page {
     padding: 20px 24px;
     background: #fff;
+    -webkit-box-shadow: 0 0 19px -2px #e2e2e2;
+    box-shadow: 0 0 19px -2px #e2e2e2;
+    padding-bottom: 26px;
 }
 form.form {
     margin-top: 60px;
@@ -1533,6 +1575,9 @@ button.form-btn {
     border-radius: 100px;
     background-color: #5bd5e8;
     color: #fff;
+}
+button.form-btn:hover {
+    background: var(--primary-color);
 }
 button.btn.btn-blog.form-btn i {
     -webkit-transform: translateY(1px);
@@ -1563,6 +1608,8 @@ button.btn.btn-blog.form-btn:hover i {
     -o-transition: all 1s;
     transition: all 1s;
     z-index: 6;
+    -webkit-box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
     border: 0;
 }
 .articlepress-search-form:hover {
@@ -1603,7 +1650,6 @@ button.btn.btn-blog.form-btn:hover i {
     transition: all .5s;
 }
 .search-input {
-    position: absolute;
     margin: auto;
     top: 0;
     right: 0;
@@ -1612,11 +1658,13 @@ button.btn.btn-blog.form-btn:hover i {
     width: 300px;
     height: 50px;
     outline: none;
-    border: 1px solid #9c9aa7;
+    border: none;
     background: var( --primary-color );
     color: white;
     padding: 0 80px 0 20px;
     border-radius: 30px;
+    -webkit-box-shadow: 0 0 25px 0 #9c9aa7, 0 20px 25px 0 rgba(150, 143, 143, 0.1);
+            box-shadow: 0 0 25px 0 #9c9aa7, 0 20px 25px 0 rgba(150, 143, 143, 0.1);
     -webkit-transition: all 1s;
     -o-transition: all 1s;
     transition: all 1s;
@@ -1975,6 +2023,53 @@ p.site-copyright {
     position: relative;
 }
 
-.rss-item {
-    padding: 15px;
+/* 
+    Comment css
+*/
+
+.comment-list article {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 15px 20px 0 rgba(0,0,0,0.06);
+    padding: 30px 50px 30px 50px;
+}
+
+.comment-body {
+    margin-top: 20px;
+}
+
+.comment-meta img {
+    margin-bottom: 15px;
+    width: 60px;
+    border-radius: 14px;
+    background-image: linear-gradient( black, #FFE);
+    transform: translate(-80px, 0px);
+    box-shadow: 0px 2px 12px 1px #cccccc8f;
+}
+
+.comment-body b.fn{
+    transform: translateX(-42px);
+    display: inline-block;
+}
+
+.comment-body b.fn a {
+    display: inline-block;
+    font-size: 19px;
+    text-decoration: none;
+    color: #7660ff;
+   
+}
+
+
+.comment-body span.says {
+    color: #a2a2a2;
+    transform: translateX(-36px);
+    display: inline-block;
+}
+
+
+.wp-block-image .alignright {
+    float: right;
+    margin-left: 1em;
+    margin-top: 60px !important;
 }

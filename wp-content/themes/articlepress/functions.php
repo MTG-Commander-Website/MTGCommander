@@ -164,16 +164,3 @@ include( get_template_directory() . '/inc/theme-enqueue.php' );
 include( get_template_directory() . '/inc/articlepress-function.php' );
 
 
-function custom_rss_layout_callback( $layout ) {
-	$layout = array(
-		'<div class="widget rss-item">',
-			'thumbnail',
-			'title',
-			'content',
-			'postdata',
-		'</div>'
-	);
-    return $layout;
-}
-add_filter( 'wp_rss_retriever_layout', 'custom_rss_layout_callback' );
-

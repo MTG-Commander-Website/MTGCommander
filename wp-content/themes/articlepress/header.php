@@ -42,7 +42,7 @@
                     if ( has_custom_logo() ) {
                     	the_custom_logo();
                     } else { ?>
-    					<a class="articlepress-logo-text navbar-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>"><h1><?php echo esc_html( get_bloginfo( 'name', 'display' ) ); ?></h1></a>
+    					<a class="articlepress-logo-text navbar-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>"><h3><?php echo esc_html( get_bloginfo( 'name', 'display' ) ); ?></h3></a>
     			<?php } ?>
 
                 <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#etanav">
