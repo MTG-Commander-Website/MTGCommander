@@ -16,16 +16,6 @@ define('PLUGIN_PATH', plugin_dir_path(__FILE__));
 
 add_shortcode('commander-feed-aggregator', 'commander_feed_aggreagator_method');
 
-class RssItem
-{
-    public $title = '';
-    public $link = '';
-    public $desc = '';
-    public $pub_date = '';
-    public $creator  = '';
-    public $source = '';
-}
-
 function commander_feed_aggreagator_method($atts)
 {
     return display_feed();
@@ -51,18 +41,40 @@ function display_feed()
         $channelInfo = $xmlDoc->getElementsByTagName('channel');
 
         for ($i = 0; $i <= sizeOf($x)-1; $i++) {
-            //Process EDHREC feed
-            $item = new RssItem();
-            $item->title = $x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
-            $item->link = $x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
-            $item->desc = $x->item($i)->getElementsByTagName('description')->item(0)->childNodes->item(0)->nodeValue;
-            $item->pub_date = $x->item($i)->getElementsByTagName('pubDate')->item(0)->childNodes->item(0)->nodeValue;
-            // $item->creator = $x->item($i)->getElementsByTagName('dc:creator')->item(0)->childNodes->item(0)->nodeValue;
-            $item->source = $channelInfo->item(0)->nodeValue;
+            $item = array();
+            $item['title'] = $x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
+            $item['link'] = $x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
+            $item['desc'] = $x->item($i)->getElementsByTagName('description')->item(0)->childNodes->item(0)->nodeValue;
 
-            echo $item->title;
+            $pubDate = $x->item($i)->getElementsByTagName('pubDate')->length;
+            if( $pubDate > 0 ){
+                $item['pub_date'] = $x->item($i)->getElementsByTagName('pubDate')->item(0)->childNodes->item(0)->nodeValue;
+
+            }
+            else if ($xmlDoc->getElementsByTagName('pubDate')->length > 0){
+                $item['pub_date'] = $xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue;
+            }
+
+
+            $creator = $x->item($i)->getElementsByTagName('dc:creator')->length;
+            if( $creator > 0 ){
+                $item['creator'] = $x->item($i)->getElementsByTagName('dc:creator')->item(0)->childNodes->item(0)->nodeValue;
+            }
+            $item['source'] = $channelInfo->item(0)->nodeValue;
+
+            if(feedFilter($item['title']) || feedFilter($item['desc'])){
+                array_push($feedItems, $item);
+            }
         }
     }
 
     return $finalFeed;
+}
+
+function feedFilter($string) {
+    $string = strtoupper($string);
+    if(strpos($string, 'COMMANDER') !== false || strpos($string, 'EDH') !== false){
+        return true;
+    }
+    return false;
 }
