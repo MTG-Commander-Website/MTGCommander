@@ -9,10 +9,6 @@
  * Author URI: http://mtgcommander.net
  */
 
-define('PLUGIN_URL', plugin_dir_url(__FILE__));
-define('PLUGIN_PATH', plugin_dir_path(__FILE__));
-
-// include(WP_RSS_RETRIEVER_PLUGIN_PATH . 'welcome-screen.php');
 
 add_shortcode('commander-feed-aggregator', 'commander_feed_aggreagator_method');
 
@@ -38,43 +34,86 @@ function display_feed()
         $xmlDoc->load($url);
 
         $x = $xmlDoc->getElementsByTagName('item');
-        $channelInfo = $xmlDoc->getElementsByTagName('channel');
+        $channelTitle = $xmlDoc->getElementsByTagName('title');
 
-        for ($i = 0; $i <= sizeOf($x)-1; $i++) {
+        for ($i = 0; $i <= sizeOf($x) - 1; $i++) {
             $item = array();
             $item['title'] = $x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
             $item['link'] = $x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
-            $item['desc'] = $x->item($i)->getElementsByTagName('description')->item(0)->childNodes->item(0)->nodeValue;
+            $item['desc'] = $x->item(0)->getElementsByTagName('description')->item(0)->nodeValue;
 
             $pubDate = $x->item($i)->getElementsByTagName('pubDate')->length;
-            if( $pubDate > 0 ){
+            if ($pubDate > 0) {
                 $item['pub_date'] = $x->item($i)->getElementsByTagName('pubDate')->item(0)->childNodes->item(0)->nodeValue;
-
-            }
-            else if ($xmlDoc->getElementsByTagName('pubDate')->length > 0){
+            } else if ($xmlDoc->getElementsByTagName('pubDate')->length > 0) {
                 $item['pub_date'] = $xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue;
             }
 
 
             $creator = $x->item($i)->getElementsByTagName('dc:creator')->length;
-            if( $creator > 0 ){
+            if ($creator > 0) {
                 $item['creator'] = $x->item($i)->getElementsByTagName('dc:creator')->item(0)->childNodes->item(0)->nodeValue;
             }
-            $item['source'] = $channelInfo->item(0)->nodeValue;
+            $item['source'] = $channelTitle->item(0)->nodeValue;
 
-            if(feedFilter($item['title']) || feedFilter($item['desc'])){
+            if (feedFilter($item['title']) || feedFilter($item['desc']) || feedFilter($item['source'])) {
                 array_push($feedItems, $item);
             }
         }
     }
+//sort does not work
+    // arsort($feedItems);
 
-    return $finalFeed;
+        $output = '<div class="rss-feed" >';
+        $artRandomizerSeed = 0;
+        foreach ($feedItems as $item) {
+            $output .= '<div class="widget rss-item-wrapper">';
+            $output .= '<div class="rss_item_image"><img src="'. randomImagePath($artRandomizerSeed) .'"></div>';
+            $artRandomizerSeed ++;
+            $output .= '<div><h2 class="widget-title rss-title"><a  target="_blank" href="' . $item['link'] . '"title="' . $item['title'] . '">';
+		    $output .= $item['title'];
+            $output .= '</a></h2></div>'; 
+            $output .= '<div>' . $item['desc'] . '</div>';
+            $output .= '<div> From ' . $item['source'] . '</div>';
+
+            if(array_key_exists('creator', $item) != null){
+                $output .= '<div>by ' . $item['creator'] . '</div>';
+            }
+            if(array_key_exists('pubDate', $item) != null){
+                $output .= '<div>on ' . $item['pubDate'] . '</div>';
+            }
+
+            $output .= '</div>';
+        }
+        $output .= '</div>';
+
+
+    return $output;
 }
 
-function feedFilter($string) {
+function feedFilter($string)
+{
     $string = strtoupper($string);
-    if(strpos($string, 'COMMANDER') !== false || strpos($string, 'EDH') !== false){
+    if (strpos($string, 'COMMANDER') !== false || strpos($string, 'EDH') !== false) {
         return true;
     }
     return false;
+}
+
+function randomImagePath($seed){
+    if($seed % 5 == 0){
+        return "../assets/nicol-bolas.jpg";
+    }
+    else if($seed % 4 == 0){
+        return "../assets/palladia-mors.jpg";
+    }
+    else if($seed % 3 == 0){
+        return "../assets/chromium.jpg";
+    }
+    else if($seed % 2 == 0){
+        return "../assets/arcades-sabboth.jpg";
+    }
+    else {
+        return "../assets/vaevictis-asmadi.jpg";
+    }
 }
