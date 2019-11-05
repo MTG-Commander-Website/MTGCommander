@@ -23,11 +23,11 @@ function display_feed()
     $feedItems = array();
     $finalFeed = "";
     $urls = array(
-        'https://articles.edhrec.com/feed/',
-        'https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en',
-        'https://www.coolstuffinc.com/articles_feed.rss',
+        'https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en', 
         'http://www.starcitygames.com/rss/rssfeed.xml',
-        'http://www.channelfireball.com/feed/'
+        'https://www.coolstuffinc.com/articles_feed.rss',
+        'http://www.channelfireball.com/feed/',
+        'https://articles.edhrec.com/feed/',
     );
 
     foreach ($urls as $key => $url) {
