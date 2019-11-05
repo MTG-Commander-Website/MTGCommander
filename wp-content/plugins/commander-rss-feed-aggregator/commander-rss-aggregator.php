@@ -11,6 +11,7 @@
 
 
 add_shortcode('commander-feed-aggregator', 'commander_feed_aggreagator_method');
+add_action('save_post', 'generateStaticRulesPage');
 
 function commander_feed_aggreagator_method($atts)
 {
@@ -40,7 +41,16 @@ function display_feed()
             $item = array();
             $item['title'] = $x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
             $item['link'] = $x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
-            $item['desc'] = $x->item(0)->getElementsByTagName('description')->item(0)->nodeValue;
+            $desc = $x->item($i)->getElementsByTagName('description')->item(0)->nodeValue;
+
+            if(strlen($desc) > 330){
+                            $item['desc'] = substr($desc, 0, 327);
+                            $item['desc'] .= "[...]";
+            }
+            else {
+                $item['desc'] = $desc;
+
+            }
 
             $pubDate = $x->item($i)->getElementsByTagName('pubDate')->length;
             if ($pubDate > 0) {
@@ -61,31 +71,35 @@ function display_feed()
             }
         }
     }
-//sort does not work
+    //sort does not work
     // arsort($feedItems);
 
-        $output = '<div class="rss-feed" >';
-        $artRandomizerSeed = 0;
-        foreach ($feedItems as $item) {
-            $output .= '<div class="widget rss-item-wrapper">';
-            $output .= '<div class="rss_item_image"><img src="'. randomImagePath($artRandomizerSeed) .'"></div>';
-            $artRandomizerSeed ++;
-            $output .= '<div><h2 class="widget-title rss-title"><a  target="_blank" href="' . $item['link'] . '"title="' . $item['title'] . '">';
-		    $output .= $item['title'];
-            $output .= '</a></h2></div>'; 
-            $output .= '<div>' . $item['desc'] . '</div>';
-            $output .= '<div> From ' . $item['source'] . '</div>';
+    $output = '<div class="rss-feed" >';
+    $artRandomizerSeed = 0;
+    foreach ($feedItems as $item) {
+        $output .= '<div class="widget rss-item-wrapper">';
+        $output .= '<div class="rss-image-container"><img class="rss_item_image" src="' . randomImagePath($artRandomizerSeed) . '"></div>';
+        $artRandomizerSeed++;
+        $output .= '<div>';
+        $output .= '<div class="rss-title"><h2 class="widget-title"><a target="_blank" href="' . $item['link'] . '"title="' . $item['title'] . '">';
+        $output .= $item['title'];
+        $output .= '</a></h2></div>';
+        $output .= '<div class="rss-desc widget">';
+        $output .= '<div>' . $item['desc'] . '</div>';
+        $output .= '<div> From ' . $item['source'] . '</div>';
 
-            if(array_key_exists('creator', $item) != null){
-                $output .= '<div>by ' . $item['creator'] . '</div>';
-            }
-            if(array_key_exists('pubDate', $item) != null){
-                $output .= '<div>on ' . $item['pubDate'] . '</div>';
-            }
-
-            $output .= '</div>';
+        if (array_key_exists('creator', $item) != null) {
+            $output .= '<div>by ' . $item['creator'] . '</div>';
+        }
+        if (array_key_exists('pubDate', $item) != null) {
+            $output .= '<div>on ' . $item['pubDate'] . '</div>';
         }
         $output .= '</div>';
+        $output .= '</div>';
+
+        $output .= '</div>';
+    }
+    $output .= '</div>';
 
 
     return $output;
@@ -100,20 +114,29 @@ function feedFilter($string)
     return false;
 }
 
-function randomImagePath($seed){
-    if($seed % 5 == 0){
+function randomImagePath($seed)
+{
+    if ($seed % 5 == 0) {
         return "../assets/nicol-bolas.jpg";
-    }
-    else if($seed % 4 == 0){
+    } else if ($seed % 4 == 0) {
         return "../assets/palladia-mors.jpg";
-    }
-    else if($seed % 3 == 0){
+    } else if ($seed % 3 == 0) {
         return "../assets/chromium.jpg";
-    }
-    else if($seed % 2 == 0){
+    } else if ($seed % 2 == 0) {
         return "../assets/arcades-sabboth.jpg";
-    }
-    else {
+    } else {
         return "../assets/vaevictis-asmadi.jpg";
     }
+}
+
+function generateStaticRulesPage(){
+    global $wpdb; 
+    $bannedList = $wpdb->get_var( 'SELECT post_content FROM `wp_posts` WHERE post_name = "banned-list" and post_status != "trash"'); 
+    $rules = $wpdb->get_var( 'SELECT post_content FROM `wp_posts` WHERE post_name = "rules" and post_status != "trash"'); 
+
+    $bannedListPage = fopen("banned-list.html", "w");
+    $rulesPage = fopen("rules.html", "w");
+
+    fwrite($bannedListPage, $bannedList);
+    fwrite($rulesPage, $rules);
 }

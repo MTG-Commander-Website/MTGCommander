@@ -23,3 +23,5 @@ shoeKey.pub
 *.txt
 Non-webContent/untitled_page.png
 *.epgz
+rules.html
+banned-list.html
