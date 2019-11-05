@@ -4,7 +4,7 @@ Theme URI: http://themes.halsey.co/visualize
 Author: Nick Halsey
 Author URI: https://celloexpressions.com/
 Description: Visualize is a minimalist two-column theme that places equal emphasis on text and images. Perfect for pairing poetry with photography, illustrations with essays, or showcasing mixed-media works, Visualize features a clean and simple design showcasing an elegant layout. The dramatic site header on the front page features a full-screen video or image of your choice, with three beautiful photo header options included with the theme. Add a custom logo, your site title and tagline, and a menu to round out the header, or dive right into the two-column content. Your content takes center stage with the two-column layout used for all posts and pages, as well as in comment areas. Add widgets to the footer to incorporate additional functionality into your site. Visualize showcases your content through a simple and unique design, providing a site experience that your visitors are sure to enjoy.
-Version: 1.1.4
+Version: 1.2
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: visualize
@@ -468,8 +468,16 @@ textarea {
 	left: 100%;
 }
 .main-navigation .current_page_item a,
-.main-navigation .current-menu-item a {
+.main-navigation .current-menu-item a,
+a[aria-current] {
+	font-style: italic;
 }
+
+.main-nav li a[aria-current] {
+	border-bottom-color: currentColor;
+}
+
+
 /* Small menu */
 .menu-toggle {
 	display: none;
@@ -727,7 +735,7 @@ a:active {
 
 
 .entry-content a,
-.comment-content a,
+.comment-body a,
 .logged-in-as a,
 .format-quote a,
 .entry-meta a {
@@ -745,9 +753,9 @@ a.button,
 .entry-content a:hover,
 .entry-content a:focus,
 .entry-content a:active,
-.comment-content a:hover,
-.comment-content a:focus,
-.comment-content a:active,
+.comment-body a:hover,
+.comment-body a:focus,
+.comment-body a:active,
 .enrty-meta a:hover,
 .enrty-meta a:focus,
 .enrty-meta a:active {
@@ -804,12 +812,29 @@ a.button,
 .site-title a:hover,
 .site-title a:focus,
 .site-title a:active {
-	color: hsl(250, 10%, 80%);
+	color: hsl(250, 50%, 70%);
 }
 
 /* Header with image */
 .home .site-header {
 	z-index: 0;
+}
+
+.custom-logo {
+	float: left;
+	height: 68px;
+	padding-right: 16px;
+	width: auto;
+}
+
+.site-branding {
+	float: left;
+}
+
+.site-title {
+	float: left;
+	clear: none;
+	margin: 0;
 }
 
 .site-header.has-header-image {
@@ -824,10 +849,11 @@ a.button,
 	background: hsl(250, 10%, 13%);
 	margin-top: calc(100vh - 127px);
 	padding: 12px 10% 0 10%;
+	float: none;
 }
 
-.home .main-nav li:hover > a,
-.home .main-nav li > a:focus {
+.home .has-header-image .main-nav li:hover > a,
+.home .has-header-image .main-nav li > a:focus {
 	color: hsl(250, 50%, 50%);
 	border-bottom-color: hsl(250, 50%, 50%);
 }
@@ -839,6 +865,7 @@ a.button,
 .home .has-header-image .site-title {
 	font-size: 96px;
 	line-height: 1.2;
+	float: none;
 }
 
 .home .has-header-image .site-description {
@@ -849,21 +876,11 @@ a.button,
     margin: 0 auto;
 }
 
-body:not(.home) .custom-logo {
-	float: left;
-	height: 68px;
-	padding-right: 16px;
+.home .has-header-image .custom-logo {
+	float: none;
+	height: auto;
+	padding: 0;
 	width: auto;
-}
-
-body:not(.home) .site-branding {
-	float: left;
-}
-
-body:not(.home) .site-title {
-	float: left;
-	clear: none;
-	margin: 0;
 }
 
 .main-nav {
@@ -944,15 +961,15 @@ body:not(.home) .site-title {
 	top: 0;
 }
 
-.home .main-nav {
+.home .has-header-image .main-nav {
 	background: hsl(250, 10%, 93%);
 }
 
-.home .main-nav a {
+.home .has-header-image .main-nav a {
 	color: hsl(250, 10%, 13%);
 }
 
-.home .main-nav .sub-menu {
+.home .has-header-image .main-nav .sub-menu {
 	background: hsl(250, 10%, 93%);
 }
 
@@ -998,6 +1015,12 @@ body:not(.home) .site-title {
 	line-height: 1.25;
 	margin-bottom: .5em;
 }
+
+.entry-content .more-link {
+	display: block;
+	margin: 0 0 24px 0;
+}
+
 .excerpt-more {
 	display: block;
 	clear: both;

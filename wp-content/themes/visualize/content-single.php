@@ -51,8 +51,16 @@
 			echo get_the_tag_list( '<ul class="post-tags"><li>', '</li><li>', '</li></ul>' );
 
 			if ( has_post_thumbnail() ) {
-				$image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
-				echo '<p><a class="button post-image" href="' . $image[0] . '">' . __( 'View Full-size Image', 'visualize' ) . '</a></p>';
+				if ( function_exists( 'wp_get_original_image_path' ) ) {
+					// WordPress 5.3 resizes even the "full" image. Get the actual original uploaded full-size image.
+					$image = wp_get_original_image_path( get_post_thumbnail_id( $post->ID ) );
+					$upload_dir = wp_get_upload_dir();
+					$image = str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $image );
+				} else {
+					$image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
+					$image = $image[0]; // URL
+				}
+				echo '<p><a class="button post-image" href="' . esc_url( $image ) . '">' . __( 'View Full-size Image', 'visualize' ) . '</a></p>';
 			}
 			edit_post_link( __( 'Edit', 'visualize' ), '<p class="edit-link">', '</p>' );
 		?>

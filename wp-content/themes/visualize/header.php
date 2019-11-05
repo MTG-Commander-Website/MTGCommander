@@ -40,7 +40,7 @@
 				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
 			</div>
 	<?php endif; // Front page/header image check. ?>
-		<nav id="site-navigation" class="main-nav" role="navigation" aria-label="<?php _e( 'Main navigation', 'visualize' ); ?>">
+		<nav id="site-navigation" class="main-nav" role="navigation" aria-label="<?php esc_attr_e( 'Main navigation', 'visualize' ); ?>">
 			<?php wp_nav_menu( array( 'theme_location' => 'primary', 'depth' => 1 ) ); ?>
 		</nav><!-- #site-navigation -->
 	</header><!-- #masthead -->

@@ -77,11 +77,13 @@ function display_feed()
     $output = '<div class="rss-feed" >';
     $output .= '<div class="widget rss-item-wrapper">';
     //need SRC for unique rules image
-    $output .= '<div class="rss-image-container"><img class="rss_item_image" src=""../assets/phelddagrif.jpg""></div>';
+    $output .= '<div class="rss-image-container"><img class="rss_item_image" src="../assets/phelddagrif.jpg"></div>';
     $output .= '<div>';
     $output .= '<div class="rss-title"><h2 class="widget-title">Commander Rules and Banned List</h2></div>';
     $output .= '<div class="rss-desc widget">';
-    $output .= '<div><a href="'. $urlPrefix . '/rules">Commander Rules</a></div><div><a href="'. $urlPrefix . '/banned-list">Banned List</a></div>';
+    $output .= '<div><a href="';
+    $output .= $urlPrefix . '/rules"><h2>Commander Rules</h2></a></div><br/><div><a href="';
+    $output .= $urlPrefix . '/banned-list"><h2>Banned List</h2></a></div>';
     $output .= '</div>';
     $output .= '</div>';
 

@@ -27,7 +27,7 @@ input[type="url"]:focus,
 input[type="password"]:focus,
 input[type="search"]:focus,
 textarea:focus,
-.home .main-nav a,
+.home .has-header-image .main-nav a,
 .entry-meta .author a,
 .post-categories a,
 .post-navigation,
@@ -116,14 +116,14 @@ blockquote,
 a:hover,
 a:focus,
 a:active,
-.home .main-nav li:hover > a,
-.home .main-nav li > a:focus,
+.home .has-header-image .main-nav li:hover > a,
+.home .has-header-image .main-nav li > a:focus,
 .has-bold-color {
 	color: hsl(' . $h . ', ' . $s_heavy . '%, 50%);
 }
 
-.home .main-nav li:hover > a,
-.home .main-nav li > a:focus {
+.home .has-header-image .main-nav li:hover > a,
+.home .has-header-image .main-nav li > a:focus {
 	border-bottom-color: hsl(' . $h . ', ' . $s_heavy . '%, 50%);
 }
 
@@ -159,6 +159,9 @@ input[type="submit"],
 .site-footer a:hover,
 .site-footer a:focus,
 .site-footer a:active,
+.site-title a:hover,
+.site-title a:focus,
+.site-title a:active,
 .main-nav li:hover > a,
 .main-nav li > a:focus,
 .post-navigation a:focus,
@@ -180,9 +183,6 @@ input[type="submit"],
 	border-bottom-color: hsl(' . $h . ', ' . $s_heavy . '%, 70%);
 }
 
-.site-title a:hover,
-.site-title a:focus,
-.site-title a:active,
 .widget-area a,
 .site-footer,
 .site-footer a {
@@ -211,8 +211,8 @@ hr {
 }
 
 pre,
-.home .main-nav,
-.home .main-nav .sub-menu,
+.home .has-header-image .main-nav,
+.home .has-header-image .main-nav .sub-menu,
 .entry-footer.entry-meta,
 .page-header,
 .post-navigation,
