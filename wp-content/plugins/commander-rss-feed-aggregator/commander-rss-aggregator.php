@@ -73,8 +73,19 @@ function display_feed()
     }
     //sort does not work
     // arsort($feedItems);
-
+    $urlPrefix = get_site_url();
     $output = '<div class="rss-feed" >';
+    $output .= '<div class="widget rss-item-wrapper">';
+    //need SRC for unique rules image
+    $output .= '<div class="rss-image-container"><img class="rss_item_image" src=""../assets/phelddagrif.jpg""></div>';
+    $output .= '<div>';
+    $output .= '<div class="rss-title"><h2 class="widget-title">Commander Rules and Banned List</h2></div>';
+    $output .= '<div class="rss-desc widget">';
+    $output .= '<div><a href="'. $urlPrefix . '/rules">Commander Rules</a></div><div><a href="'. $urlPrefix . '/banned-list">Banned List</a></div>';
+    $output .= '</div>';
+    $output .= '</div>';
+
+    $output .= '</div>';
     $artRandomizerSeed = 0;
     foreach ($feedItems as $item) {
         $output .= '<div class="widget rss-item-wrapper">';
