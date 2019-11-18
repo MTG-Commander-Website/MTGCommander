@@ -10,7 +10,7 @@
  */
 
 
-add_shortcode('commander-feed-aggregator', 'commander_feed_aggreagator_method');
+add_shortcode('commander-rss-aggregator', 'commander_feed_aggreagator_method');
 add_action('save_post', 'generateStaticRulesPage');
 
 function commander_feed_aggreagator_method($atts)
