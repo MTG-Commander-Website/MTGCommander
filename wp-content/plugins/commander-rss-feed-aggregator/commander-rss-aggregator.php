@@ -163,8 +163,8 @@ function generateStaticRulesPage(){
     $bannedList = $wpdb->get_var( 'SELECT post_content FROM `wp_posts` WHERE post_name = "banned-list" and post_status != "trash"'); 
     $rules = $wpdb->get_var( 'SELECT post_content FROM `wp_posts` WHERE post_name = "rules" and post_status != "trash"'); 
 
-    $bannedListPage = fopen("banned-list.html", "w");
-    $rulesPage = fopen("rules.html", "w");
+    $bannedListPage = fopen("./assets/banned-list.html", "w");
+    $rulesPage = fopen("./assets/rules.html", "w");
 
     fwrite($bannedListPage, $bannedList);
     fwrite($rulesPage, $rules);
