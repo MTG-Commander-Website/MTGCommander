@@ -83,13 +83,13 @@ function display_feed()
                 <div class="rss-desc widget">
                     <div>
                         <a href="' . $urlPrefix . '/rules">
-                            <h2>Commander Rules</h2>
+                            <h5>Commander Rules</h5>
                         </a>
                     </div>
                     <br/>
                     <div>
                         <a href="' . $urlPrefix . '/banned-list">
-                            <h2>Banned List</h2>
+                            <h5>Banned List</h5>
                         </a>
                     </div>
                 </div>
@@ -114,9 +114,9 @@ function display_feed()
             </div>
             <div>
                 <div class="rss-title">
-                    <h2 class="widget-title">
+                    <h3 class="widget-title">
                         <a target="_blank" href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title']. '</a>
-                    </h2>
+                    </h3>
                 </div>
                 <div class="rss-desc widget">
                     <div>' . $item['desc'] . '</div>
