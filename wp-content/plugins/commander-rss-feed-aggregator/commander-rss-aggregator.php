@@ -75,42 +75,40 @@ function display_feed()
     // arsort($feedItems);
     $urlPrefix = get_site_url();
     $output = '<div class="rss-feed" >';
-    $output .= '<div class="widget rss-item-wrapper">';
+        $output .= '<div class="widget rss-item-wrapper">';
     //need SRC for unique rules image
-    $output .= '<div class="rss-image-container"><img class="rss_item_image" src="../assets/phelddagrif.jpg"></div>';
-    $output .= '<div>';
-    $output .= '<div class="rss-title"><h2 class="widget-title">Commander Rules and Banned List</h2></div>';
-    $output .= '<div class="rss-desc widget">';
-    $output .= '<div><a href="';
-    $output .= $urlPrefix . '/rules"><h2>Commander Rules</h2></a></div><br/><div><a href="';
-    $output .= $urlPrefix . '/banned-list"><h2>Banned List</h2></a></div>';
-    $output .= '</div>';
-    $output .= '</div>';
-
-    $output .= '</div>';
+            $output .= '<div class="rss-image-container"><img class="rss_item_image" src="../assets/phelddagrif.jpg"></div>';
+            $output .= '<div>';
+                $output .= '<div class="rss-title"><h2 class="widget-title">Commander Rules and Banned List</h2></div>';
+                    $output .= '<div class="rss-desc widget">';
+                        $output .= '<div><a href="';
+                        $output .= $urlPrefix . '/rules"><h2>Commander Rules</h2></a></div><br/><div><a href="';
+                        $output .= $urlPrefix . '/banned-list"><h2>Banned List</h2></a></div>';
+                    $output .= '</div>';
+                $output .= '</div>';
+            $output .= '</div>';
     $artRandomizerSeed = 0;
     foreach ($feedItems as $item) {
         $output .= '<div class="widget rss-item-wrapper">';
-        $output .= '<div class="rss-image-container"><img class="rss_item_image" src="' . randomImagePath($artRandomizerSeed) . '"></div>';
+            $output .= '<div class="rss-image-container"><img class="rss_item_image" src="' . randomImagePath($artRandomizerSeed) . '"></div>';
         $artRandomizerSeed++;
-        $output .= '<div>';
-        $output .= '<div class="rss-title"><h2 class="widget-title"><a target="_blank" href="' . $item['link'] . '"title="' . $item['title'] . '">';
-        $output .= $item['title'];
-        $output .= '</a></h2></div>';
-        $output .= '<div class="rss-desc widget">';
-        $output .= '<div>' . $item['desc'] . '</div>';
-        $output .= '<div> From ' . $item['source'] . '</div>';
-
-        if (array_key_exists('creator', $item) != null) {
-            $output .= '<div>by ' . $item['creator'] . '</div>';
-        }
-        if (array_key_exists('pubDate', $item) != null) {
-            $output .= '<div>on ' . $item['pubDate'] . '</div>';
-        }
-        $output .= '</div>';
-        $output .= '</div>';
-
-        $output .= '</div>';
+                $output .= '<div>';
+                    $output .= '<div class="rss-title"><h2 class="widget-title"><a target="_blank" href="' . $item['link'] . '"title="' . $item['title'] . '">';
+                    $output .= $item['title'];
+                    $output .= '</a></h2></div>';
+                    $output .= '<div class="rss-desc widget">';
+                        $output .= '<div>' . $item['desc'] . '</div>';
+                        $output .= '<div> From ' . $item['source'] . '</div>';
+                        if (array_key_exists('creator', $item) != null) {
+                            $output .= '<div>by ' . $item['creator'] . '</div>';
+                        }
+                        if (array_key_exists('pubDate', $item) != null) {
+                            $output .= '<div>on ' . $item['pubDate'] . '</div>';
+                        }
+                    $output .= '</div>';
+                $output .= '</div>';
+            $output .= '</div>';
+            $output .= '</div>';
     }
     $output .= '</div>';
 
