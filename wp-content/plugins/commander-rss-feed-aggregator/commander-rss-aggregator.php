@@ -77,7 +77,7 @@ function display_feed()
     $urlPrefix = get_site_url();
     $output = '<div class="rss-feed">';
     $output .= '<div class="widget rss-item-wrapper">
-            <div class="rss-image-container"><img class="rss_item_image" src="../assets/phelddagrif.jpg"></div>
+            <div class="rss-image-container"><img class="rss_item_image" src="../assets/rules-lawyer.jpg"></div>
             <div>
                 <div class="rss-title"><h2 class="widget-title">Commander Rules and Banned List</h2></div>
                 <div class="rss-desc widget">
