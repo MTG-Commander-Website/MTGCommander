@@ -15,25 +15,31 @@ add_action('save_post', 'generateStaticRulesPage');
 
 function commander_feed_aggreagator_method($atts)
 {
-    return display_feed();
+    $feed = display_feed();
+    return $feed;
 }
 
 function display_feed()
 {
     $feedItems = array();
     $finalFeed = "";
-    $urls = array( 
-               'https://articles.edhrec.com/feed/',
-        'https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en', 
-        'https://articles.starcitygames.com/feed/',
-        'https://www.coolstuffinc.com/articles_feed.rss',
+    $urls = array(
+        'https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en',
+        'https://www.coolstuffinc.com/articles_feed.rss', 
+        'https://articles.edhrec.com/feed/',
         'http://www.channelfireball.com/feed/',
-
+        'https://articles.starcitygames.com/feed/', 
+        'testInvalidURL'
     );
 
     foreach ($urls as $key => $url) {
+        libxml_use_internal_errors(true);
         $xmlDoc = new DOMDocument();
         $xmlDoc->load($url);
+        if (sizeOf(libxml_get_errors()) > 0) {
+            libxml_clear_errors();
+            continue;
+        }
 
         $x = $xmlDoc->getElementsByTagName('item');
         $channelTitle = $xmlDoc->getElementsByTagName('title');
@@ -44,14 +50,12 @@ function display_feed()
             $item['link'] = $x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
             $desc = $x->item($i)->getElementsByTagName('description')->item(0)->nodeValue;
 
-            if(strlen($desc) > 330){
-                            $item['desc'] = substr($desc, 0, 327);
-                            $item['desc'] .= "[...]";
-            }
-            else {
+            // if (strlen($desc) > 330) {
+            //     $item['desc'] = substr($desc, 0, 327);
+            //     $item['desc'] .= "[...]";
+            // } else {
                 $item['desc'] = $desc;
-
-            }
+            // }
 
             $pubDate = $x->item($i)->getElementsByTagName('pubDate')->length;
             if ($pubDate > 0) {
@@ -107,23 +111,23 @@ function display_feed()
             $pubDate = '<div>on ' . $item['pubDate'] . '</div>';
         }
 
-        $output .= 
-        '<div class="widget rss-item-wrapper">
+        $output .=
+            '<div class="widget rss-item-wrapper">
             <div class="rss-image-container">
                 <img class="rss_item_image" src="' . randomImagePath($artRandomizerSeed) . '">
             </div>
             <div>
                 <div class="rss-title">
                     <h3 class="widget-title">
-                        <a target="_blank" href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title']. '</a>
+                        <a target="_blank" href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a>
                     </h3>
                 </div>
                 <div class="rss-desc widget">
                     <div>' . $item['desc'] . '</div>
                     <div> From ' . $item['source'] . '</div>'
-                    . $creator
-                    . $pubDate .  
-                '</div>
+            . $creator
+            . $pubDate .
+            '</div>
             </div>
         </div>';
         $artRandomizerSeed++;
@@ -158,10 +162,11 @@ function randomImagePath($seed)
     }
 }
 
-function generateStaticRulesPage(){
-    global $wpdb; 
-    $bannedList = $wpdb->get_var( 'SELECT post_content FROM `wp_posts` WHERE post_name = "banned-list" and post_status != "trash"'); 
-    $rules = $wpdb->get_var( 'SELECT post_content FROM `wp_posts` WHERE post_name = "rules" and post_status != "trash"'); 
+function generateStaticRulesPage()
+{
+    global $wpdb;
+    $bannedList = $wpdb->get_var('SELECT post_content FROM `wp_posts` WHERE post_name = "banned-list" and post_status != "trash"');
+    $rules = $wpdb->get_var('SELECT post_content FROM `wp_posts` WHERE post_name = "rules" and post_status != "trash"');
 
     $bannedListPage = fopen("./assets/banned-list.html", "w");
     $rulesPage = fopen("./assets/rules.html", "w");
