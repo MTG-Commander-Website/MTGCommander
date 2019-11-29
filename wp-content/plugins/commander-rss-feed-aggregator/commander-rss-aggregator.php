@@ -25,7 +25,7 @@ function display_feed()
     $urls = array( 
                'https://articles.edhrec.com/feed/',
         'https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en', 
-        'http://www.starcitygames.com/rss/rssfeed.xml',
+        'https://articles.starcitygames.com/feed/',
         'https://www.coolstuffinc.com/articles_feed.rss',
         'http://www.channelfireball.com/feed/',
 
