@@ -1,0 +1,38 @@
+<style>
+
+.rss-item-wrapper{
+	  display: flex;
+  flex-wrap: nowrap;
+	min-height: 275px;
+}
+
+.rss_item_image{
+width: 200px;
+}
+
+.rss-title {
+	float: right;
+	width: 100%;
+	word-wrap: break-word;
+}
+
+.rss-desc {
+	float: right;
+	margin-bottom: 5px;
+	width: 100%;
+	padding-left: 10px;
+	word-wrap: break-word;
+}
+
+.rss-image-container{
+	display: flex;
+  flex-direction: column;
+  text-align: center;	
+	    flex-shrink: 0;
+	padding-right: 15px;
+}
+
+.rss-desc img {
+	display: none;
+}
+</style>
