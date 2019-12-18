@@ -133,7 +133,7 @@ function generate_feed_dom($feedItems)
                     '<span class="byline">' . $item['source'] . '</span>
 		        </div>
             </header>
-    		<div class="entry-content">
+    		<div class="entry-header">
 		        <p>' . $item['desc'] . '</p>
 	        </div>
         </article>';
