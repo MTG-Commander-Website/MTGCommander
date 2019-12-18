@@ -4,70 +4,90 @@
  * Plugin Name: MTG Commander custom rss aggregator plugin
  * Plugin URI: n/a
  * Description: A custom RSS feed aggregator for the MTG Commander format website
- * Version: 0.0.1
+ * Version: 0.2.4
  * Author: Andrew "Shoe" Lee
  * Author URI: http://mtgcommander.net
  */
 
 
-add_shortcode('commander-rss-aggregator', 'commander_feed_aggreagator_method');
-add_action('save_post', 'generateStaticRulesPage');
+$COMMANDER_RSS_DEBUG = false;
 
-function commander_feed_aggreagator_method($atts)
+add_shortcode('commander-rss-aggregator', 'insert_feed');
+add_action('save_post', 'generateStaticRulesPage');
+register_activation_hook(__FILE__, 'activate_feed_generation');
+add_action('generate_feed', 'generate_feed_html');
+
+function activate_feed_generation()
 {
-    $feed = display_feed();
-    return $feed;
+    generate_feed_html();
+    // if (!wp_next_scheduled('generate_feed')) {
+    //     wp_schedule_event(time(), 'daily', 'generate_feed');
+    // }
 }
 
-function display_feed()
+function generate_feed_html()
+{
+
+    $feedItems = create_feed_item_array();
+    $sortedFeedItems = sort_feed_by_date($feedItems);
+    $output = generate_feed_dom($sortedFeedItems);
+    save_feed_html($output);
+}
+
+function create_feed_item_array()
 {
     $feedItems = array();
-    $finalFeed = "";
-    $urls = array(
-        'https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en',
-        'https://www.coolstuffinc.com/articles_feed.rss', 
-        'https://articles.edhrec.com/feed/',
-        'http://www.channelfireball.com/feed/',
-        'https://articles.starcitygames.com/feed/', 
-        'testInvalidURL'
+    $sites = array(
+        array('https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en', "/assets/nicol-bolas.jpg"),
+        array('https://www.coolstuffinc.com/articles_feed.rss', "/assets/vaevictis-asmadi.jpg"),
+        array('https://articles.edhrec.com/feed/', "/assets/palladia-mors.jpg"),
+        array('http://www.channelfireball.com/feed/', "/assets/chromium.jpg"),
+        array('https://articles.starcitygames.com/feed/', "/assets/arcades-sabboth.jpg")
     );
 
-    foreach ($urls as $key => $url) {
+    foreach ($sites as $key => $siteInfo) {
         libxml_use_internal_errors(true);
         $xmlDoc = new DOMDocument();
-        $xmlDoc->load($url);
+        $xmlDoc->load($siteInfo[0]);
         if (sizeOf(libxml_get_errors()) > 0) {
             libxml_clear_errors();
+            if ($COMMANDER_RSS_DEBUG) {
+                $output .= "ERROR: " . libxml_get_errors();
+            }
             continue;
         }
 
-        $x = $xmlDoc->getElementsByTagName('item');
+        $xmlFeedItem = $xmlDoc->getElementsByTagName('item');
         $channelTitle = $xmlDoc->getElementsByTagName('title');
 
-        for ($i = 0; $i <= sizeOf($x) - 1; $i++) {
+        foreach ($xmlFeedItem as $key => $node) {
             $item = array();
-            $item['title'] = $x->item($i)->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
-            $item['link'] = $x->item($i)->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
-            $desc = $x->item($i)->getElementsByTagName('description')->item(0)->nodeValue;
+            $item['imageURL'] = $siteInfo[1];
+            $item['title'] = $node->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
+            $item['link'] = $node->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
+            $desc = $node->getElementsByTagName('description')->item(0)->nodeValue;
 
             // if (strlen($desc) > 330) {
             //     $item['desc'] = substr($desc, 0, 327);
             //     $item['desc'] .= "[...]";
             // } else {
-                $item['desc'] = $desc;
+            $item['desc'] = $desc;
             // }
 
-            $pubDate = $x->item($i)->getElementsByTagName('pubDate')->length;
+            $pubDate = $node->getElementsByTagName('pubDate')->length;
             if ($pubDate > 0) {
-                $item['pub_date'] = $x->item($i)->getElementsByTagName('pubDate')->item(0)->childNodes->item(0)->nodeValue;
+                $item['pub_date'] = substr($node->getElementsByTagName('pubDate')->item(0)->nodeValue, 0, 16);
+                $item['sort_date'] = strtotime($node->getElementsByTagName('pubDate')->item(0)->nodeValue);
             } else if ($xmlDoc->getElementsByTagName('pubDate')->length > 0) {
-                $item['pub_date'] = $xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue;
+                //Not sure if this is ever hit now?
+                $item['pub_date'] = substr($xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue, 0, 16);
+                $item['sort_date'] = strtotime($xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue);
             }
 
 
-            $creator = $x->item($i)->getElementsByTagName('dc:creator')->length;
+            $creator = $node->getElementsByTagName('dc:creator')->length;
             if ($creator > 0) {
-                $item['creator'] = $x->item($i)->getElementsByTagName('dc:creator')->item(0)->childNodes->item(0)->nodeValue;
+                $item['creator'] = $node->getElementsByTagName('dc:creator')->item(0)->nodeValue;
             }
             $item['source'] = $channelTitle->item(0)->nodeValue;
 
@@ -76,29 +96,23 @@ function display_feed()
             }
         }
     }
-    //sort does not work
-    // arsort($feedItems);
-    $urlPrefix = get_site_url();
+
+    return $feedItems;
+}
+
+function sort_feed_by_date($feedItems)
+{
+    foreach ($feedItems as $key => $feedItem) {
+        $sortDate[$key] = $feedItem['sort_date'];
+    }
+    array_multisort($sortDate, SORT_DESC, $feedItems);
+    return $feedItems;
+}
+
+function generate_feed_dom($feedItems)
+{
     $output = '<div class="rss-feed">';
-    $output .= '<div class="widget rss-item-wrapper">
-            <div class="rss-image-container"><img class="rss_item_image" src="../assets/rules-lawyer.jpg"></div>
-            <div>
-                <div class="rss-title"><h2 class="widget-title">Commander Rules and Banned List</h2></div>
-                <div class="rss-desc widget">
-                    <div>
-                        <a href="' . $urlPrefix . '/rules">
-                            <div>Commander Rules</div>
-                        </a>
-                    </div>
-                    <br/>
-                    <div>
-                        <a href="' . $urlPrefix . '/banned-list">
-                            <div>Banned List</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>';
+    $urlPrefix = get_site_url();
     $artRandomizerSeed = 0;
     foreach ($feedItems as $item) {
         $creator = "";
@@ -107,22 +121,22 @@ function display_feed()
         if (array_key_exists('creator', $item) != null) {
             $creator = '<div>by ' . $item['creator'] . '</div>';
         }
-        if (array_key_exists('pubDate', $item) != null) {
-            $pubDate = '<div>on ' . $item['pubDate'] . '</div>';
+        if (array_key_exists('pub_date', $item) != null) {
+            $pubDate = '<div>on ' . $item['pub_date'] . '</div>';
         }
 
         $output .=
-            '<div class="widget rss-item-wrapper">
+            '<div class="rss-item-wrapper">
             <div class="rss-image-container">
-                <img class="rss_item_image" src="' . randomImagePath($artRandomizerSeed) . '">
+                <img class="rss_item_image" src="' . $urlPrefix . $item['imageURL'] . '">
             </div>
             <div>
                 <div class="rss-title">
-                    <h3 class="widget-title">
+                    <h3 class="entry-title">
                         <a target="_blank" href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a>
                     </h3>
                 </div>
-                <div class="rss-desc widget">
+                <div class="rss-desc entry-desc">
                     <div>' . $item['desc'] . '</div>
                     <div> From ' . $item['source'] . '</div>'
             . $creator
@@ -133,9 +147,22 @@ function display_feed()
         $artRandomizerSeed++;
     }
     $output .= '</div>';
-
-
     return $output;
+}
+
+function insert_feed()
+{
+    $feedFile = fopen(ABSPATH . "assets/feed.html", "r");
+    $feedHtml = fread($feedFile, fileSize(ABSPATH . "assets/feed.html"));
+    fclose($feedFile);
+    return  $feedHtml;
+}
+
+function save_feed_html($content)
+{
+    $feedHTML = fopen(ABSPATH . "assets/feed.html", "w");
+    fwrite($feedHTML, $content);
+    fclose($feedHTML);
 }
 
 function feedFilter($string)
@@ -147,30 +174,18 @@ function feedFilter($string)
     return false;
 }
 
-function randomImagePath($seed)
-{
-    if ($seed % 5 == 0) {
-        return "../assets/nicol-bolas.jpg";
-    } else if ($seed % 4 == 0) {
-        return "../assets/palladia-mors.jpg";
-    } else if ($seed % 3 == 0) {
-        return "../assets/chromium.jpg";
-    } else if ($seed % 2 == 0) {
-        return "../assets/arcades-sabboth.jpg";
-    } else {
-        return "../assets/vaevictis-asmadi.jpg";
-    }
-}
-
 function generateStaticRulesPage()
 {
     global $wpdb;
     $bannedList = $wpdb->get_var('SELECT post_content FROM `wp_posts` WHERE post_name = "banned-list" and post_status != "trash"');
     $rules = $wpdb->get_var('SELECT post_content FROM `wp_posts` WHERE post_name = "rules" and post_status != "trash"');
 
-    $bannedListPage = fopen("./assets/banned-list.html", "w");
-    $rulesPage = fopen("./assets/rules.html", "w");
+    $bannedListPage = fopen(ABSPATH . "assets/banned-list.html", "w");
+    $rulesPage = fopen(ABSPATH . "assets/rules.html", "w");
 
     fwrite($bannedListPage, $bannedList);
     fwrite($rulesPage, $rules);
+
+    fclose($bannedListPage);
+    fclose($rulesPage);
 }
