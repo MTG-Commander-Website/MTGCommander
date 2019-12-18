@@ -4,7 +4,7 @@
  * Plugin Name: MTG Commander custom rss aggregator plugin
  * Plugin URI: n/a
  * Description: A custom RSS feed aggregator for the MTG Commander format website
- * Version: 0.2.4
+ * Version: 0.3.0
  * Author: Andrew "Shoe" Lee
  * Author URI: http://mtgcommander.net
  */
@@ -19,10 +19,9 @@ add_action('generate_feed', 'generate_feed_html');
 
 function activate_feed_generation()
 {
-    generate_feed_html();
-    // if (!wp_next_scheduled('generate_feed')) {
-    //     wp_schedule_event(time(), 'daily', 'generate_feed');
-    // }
+    if (!wp_next_scheduled('generate_feed')) {
+        wp_schedule_event(time(), 'daily', 'generate_feed');
+    }
 }
 
 function generate_feed_html()
@@ -119,10 +118,10 @@ function generate_feed_dom($feedItems)
         $pubDate = "";
 
         if (array_key_exists('creator', $item) != null) {
-            $creator = '<div>by ' . $item['creator'] . '</div>';
+            $creator = '<span>' . $item['creator'] . '</span>';
         }
         if (array_key_exists('pub_date', $item) != null) {
-            $pubDate = '<div>on ' . $item['pub_date'] . '</div>';
+            $pubDate = '<span>' . $item['pub_date'] . '</span>';
         }
 
         $output .=
@@ -137,11 +136,13 @@ function generate_feed_dom($feedItems)
                     </h3>
                 </div>
                 <div class="rss-desc entry-desc">
-                    <div>' . $item['desc'] . '</div>
-                    <div> From ' . $item['source'] . '</div>'
+                <div class="entry-meta">
+                    <span> From ' . $item['source'] . '</span>'
             . $creator
             . $pubDate .
             '</div>
+                    <div>' . $item['desc'] . '</div>
+            </div>
             </div>
         </div>';
         $artRandomizerSeed++;
