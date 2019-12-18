@@ -118,34 +118,25 @@ function generate_feed_dom($feedItems)
         $pubDate = "";
 
         if (array_key_exists('creator', $item) != null) {
-            $creator = '<span>' . $item['creator'] . '</span>';
-        }
-        if (array_key_exists('pub_date', $item) != null) {
-            $pubDate = '<span>' . $item['pub_date'] . '</span>';
+            $creator = '<span class="byline"><span class="author vcard">' . $item['creator'] . '</span>';
         }
 
-        $output .=
-            '<div class="rss-item-wrapper">
-            <div class="rss-image-container">
-                <img class="rss_item_image" src="' . $urlPrefix . $item['imageURL'] . '">
-            </div>
-            <div>
-                <div class="rss-title">
-                    <h3 class="entry-title">
-                        <a target="_blank" href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a>
-                    </h3>
-                </div>
-                <div class="rss-desc entry-desc">
-                <div class="entry-meta">
-                    <span> From ' . $item['source'] . '</span>'
-            . $creator
-            . $pubDate .
-            '</div>
-                    <div>' . $item['desc'] . '</div>
-            </div>
-            </div>
-        </div>';
-        $artRandomizerSeed++;
+        $output .='<article class="post type-post status-publish format-standard has-post-thumbnail hentry">
+	    	<a class="post-thumbnail" href="' . $item['link'] . '" title="' . $item['title'] . '" aria-hidden="true">
+                <img width="558" height="372" src="' . $urlPrefix . $item['imageURL'] . '" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="Unlike that post…">	
+            </a>
+            <header class="entry-header">
+            	<h1 class="entry-title"><a href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a></h1>
+		        <div class="entry-meta">
+                    <span class="entry-date"><a href="' . $item['link'] . '" title="' . $item['title'] . '"><time class="entry-date">' . $item['pub_date'] . '</time></a></span>'
+                    . $creator .
+                    '<span class="byline">' . $item['source'] . '</span>
+		        </div>
+            </header>
+    		<div class="entry-content">
+		        <p>' . $item['desc'] . '</p>
+	        </div>
+        </article>';
     }
     $output .= '</div>';
     return $output;
