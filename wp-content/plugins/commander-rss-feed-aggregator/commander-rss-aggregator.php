@@ -123,7 +123,7 @@ function generate_feed_dom($feedItems)
 
         $output .='<article class="post type-post status-publish format-standard has-post-thumbnail hentry">
 	    	<a class="post-thumbnail" href="' . $item['link'] . '" title="' . $item['title'] . '" aria-hidden="true">
-                <img width="558" height="372" src="' . $urlPrefix . $item['imageURL'] . '" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="Unlike that post…">	
+                <img width="558" height="372" src="' . $urlPrefix . $item['imageURL'] . '" class="attachment-post-thumbnail size-post-thumbnail wp-post-image">	
             </a>
             <header class="entry-header">
             	<h1 class="entry-title"><a href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a></h1>
