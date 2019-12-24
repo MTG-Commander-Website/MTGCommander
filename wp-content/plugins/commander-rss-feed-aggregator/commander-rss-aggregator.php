@@ -41,7 +41,8 @@ function create_feed_item_array()
         array('https://www.coolstuffinc.com/articles_feed.rss', "/assets/vaevictis-asmadi.jpg"),
         array('https://articles.edhrec.com/feed/', "/assets/palladia-mors.jpg"),
         array('http://www.channelfireball.com/feed/', "/assets/chromium.jpg"),
-        array('https://articles.starcitygames.com/feed/', "/assets/arcades-sabboth.jpg")
+	array('https://articles.starcitygames.com/feed/', "/assets/arcades-sabboth.jpg"),
+	array('http://staging.mtgcommander.net/index.php/feed/', "/assets/Ghost_Council_of_Orzhova-750x400.jpg"),
     );
 
     foreach ($sites as $key => $siteInfo) {
