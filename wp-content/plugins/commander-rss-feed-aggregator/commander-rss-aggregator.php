@@ -43,10 +43,10 @@ function create_feed_item_array()
     $feedItems = array();
     $sites = array(
         array('https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en', "/assets/1200px-Wizards_of_the_Coast_logo.svg.png"),
-        array('https://www.coolstuffinc.com/articles_feed.rss', "/assets/vaevictis-asmadi.jpg"),
-        array('https://articles.edhrec.com/feed/', "/assets/palladia-mors.jpg", 'trim_before_pipe'),
-        array('http://www.channelfireball.com/feed/', "/assets/chromium.jpg"),
-        array('https://articles.starcitygames.com/feed/', "/assets/arcades-sabboth.jpg"),
+        array('https://www.coolstuffinc.com/articles_feed.rss', "/assets/csi_logo.jpg"),
+        array('https://articles.edhrec.com/feed/', "/assets/edhrec_logo.png", 'trim_before_pipe'),
+        array('http://www.channelfireball.com/feed/', "/assets/cfb_logo.png"),
+        array('https://articles.starcitygames.com/feed/', "/assets/scg_logo.jpg"),
         array('http://staging.mtgcommander.net/index.php/feed/', "/assets/Logo-Design-small.png"),
     );
 
