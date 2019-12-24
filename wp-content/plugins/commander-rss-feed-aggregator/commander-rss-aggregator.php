@@ -33,16 +33,21 @@ function generate_feed_html()
     save_feed_html($output);
 }
 
+function trim_before_pipe($item_name) {
+    $fragments = explode("|",$item_name);
+    return $fragments[0];
+}
+
 function create_feed_item_array()
 {
     $feedItems = array();
     $sites = array(
-        array('https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en', "/assets/nicol-bolas.jpg"),
+        array('https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en', "/assets/1200px-Wizards_of_the_Coast_logo.svg.png"),
         array('https://www.coolstuffinc.com/articles_feed.rss', "/assets/vaevictis-asmadi.jpg"),
-        array('https://articles.edhrec.com/feed/', "/assets/palladia-mors.jpg"),
+        array('https://articles.edhrec.com/feed/', "/assets/palladia-mors.jpg", 'trim_before_pipe'),
         array('http://www.channelfireball.com/feed/', "/assets/chromium.jpg"),
-	array('https://articles.starcitygames.com/feed/', "/assets/arcades-sabboth.jpg"),
-	array('http://staging.mtgcommander.net/index.php/feed/', "/assets/Ghost_Council_of_Orzhova-750x400.jpg"),
+        array('https://articles.starcitygames.com/feed/', "/assets/arcades-sabboth.jpg"),
+        array('http://staging.mtgcommander.net/index.php/feed/', "/assets/Logo-Design-small.png"),
     );
 
     foreach ($sites as $key => $siteInfo) {
@@ -63,7 +68,12 @@ function create_feed_item_array()
         foreach ($xmlFeedItem as $key => $node) {
             $item = array();
             $item['imageURL'] = $siteInfo[1];
-            $item['title'] = $node->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
+            $title = $node->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
+            if (sizeOf($siteInfo) > 2) {
+                $item['title'] = call_user_func($siteInfo[2], $title);
+            } else {
+                $item['title'] = $title;
+            }
             $item['link'] = $node->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
             $desc = $node->getElementsByTagName('description')->item(0)->nodeValue;
 
@@ -91,7 +101,7 @@ function create_feed_item_array()
             }
             $item['source'] = $channelTitle->item(0)->nodeValue;
 
-            if (feedFilter($item['title']) || feedFilter($item['desc']) || feedFilter($item['source'])) {
+            if (feedFilter($title) || feedFilter($item['desc']) || feedFilter($item['source'])) {
                 array_push($feedItems, $item);
             }
         }
@@ -123,20 +133,20 @@ function generate_feed_dom($feedItems)
         }
 
         $output .='<article class="post type-post status-publish format-standard has-post-thumbnail hentry">
-	    	<a style="width: 558px; height: 372px;" class="post-thumbnail" href="' . $item['link'] . '" title="' . $item['title'] . '" aria-hidden="true">
-                <img width="558" height="372" src="' . $urlPrefix . $item['imageURL'] . '" class="attachment-post-thumbnail size-post-thumbnail wp-post-image">	
+                <a class="post-thumbnail feed-logo" href="' . $item['link'] . '" title="' . $item['title'] . '" aria-hidden="true">
+                <img src="' . $urlPrefix . $item['imageURL'] . '" class="attachment-post-thumbnail size-post-thumbnail">        
             </a>
             <header class="entry-header">
-            	<h1 class="entry-title"><a href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a></h1>
-		        <div class="entry-meta">
+                <h1 class="entry-title"><a href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a></h1>
+                        <div class="entry-meta">
                     <span class="entry-date"><a href="' . $item['link'] . '" title="' . $item['title'] . '"><time class="entry-date">' . $item['pub_date'] . '</time></a></span>'
                     . $creator .
                     '<span class="byline">' . $item['source'] . '</span>
-		        </div>
+                        </div>
             </header>
-    		<div class="entry-header">
-		        <p>' . $item['desc'] . '</p>
-	        </div>
+                <div class="entry-header">
+                        <p>' . $item['desc'] . '</p>
+                </div>
         </article>';
     }
     $output .= '</div>';
