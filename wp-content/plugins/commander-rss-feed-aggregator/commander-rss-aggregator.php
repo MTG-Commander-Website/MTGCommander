@@ -4,7 +4,7 @@
  * Plugin Name: MTG Commander custom rss aggregator plugin
  * Plugin URI: n/a
  * Description: A custom RSS feed aggregator for the MTG Commander format website
- * Version: 0.3.0
+ * Version: 0.3.2
  * Author: Andrew "Shoe" Lee
  * Author URI: http://mtgcommander.net
  */
