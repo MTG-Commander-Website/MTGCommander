@@ -33,21 +33,64 @@ function generate_feed_html()
     save_feed_html($output);
 }
 
-function trim_before_pipe($item_name) {
-    $fragments = explode("|",$item_name);
-    return $fragments[0];
+function default_processor($node, $channelTitle) {
+    $item = array();
+    $item['title'] = $node->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
+    $item['desc'] = $node->getElementsByTagName('description')->item(0)->nodeValue;
+    $item['source'] = $channelTitle->item(0)->nodeValue;
+    if (!feedFilter($item['title']) && !feedFilter($item['desc']) && !feedFilter($item['source'])) {
+        // Skip this item
+        return NULL;
+    }
+
+    $item['link'] = $node->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
+
+    $pubDate = $node->getElementsByTagName('pubDate')->length;
+    if ($pubDate > 0) {
+        $item['pub_date'] = substr($node->getElementsByTagName('pubDate')->item(0)->nodeValue, 0, 16);
+        $item['sort_date'] = strtotime($node->getElementsByTagName('pubDate')->item(0)->nodeValue);
+    } else if ($xmlDoc->getElementsByTagName('pubDate')->length > 0) {
+        //Not sure if this is ever hit now?
+        $item['pub_date'] = substr($xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue, 0, 16);
+        $item['sort_date'] = strtotime($xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue);
+    }
+
+    $creator_tags = $node->getElementsByTagName('creator');
+    foreach ($creator_tags as $tag) {
+        if (array_key_exists('creator', $item)) {
+            error_log("Found more than one creator tag for ".$item['link']);
+        }
+        $item['creator'] = $tag->nodeValue;
+    }
+
+    return $item;
+}
+
+function edhrec_processor($node, $channelTitle) {
+    $item = default_processor($node, $channelTitle);
+    if (is_null($item)) {
+        return NULL;
+    }
+    if (array_key_exists('creator', $item) && strpos('Community Spotlight', $item['creator']) !== false) {
+        // Skip EDHRec's "Community spotlight" articles
+        return NULL;
+    }
+    $title_fragments = explode("|",$item['title']);
+    $item['title'] = $title_fragments[0];
+    return $item;
 }
 
 function create_feed_item_array()
 {
     $feedItems = array();
     $sites = array(
-        array('https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en', "/assets/1200px-Wizards_of_the_Coast_logo.svg.png"),
-        array('https://www.coolstuffinc.com/articles_feed.rss', "/assets/csi_logo.jpg"),
-        array('https://articles.edhrec.com/feed/', "/assets/edhrec_logo.png", 'trim_before_pipe'),
-        array('http://www.channelfireball.com/feed/', "/assets/cfb_logo.png"),
-        array('https://articles.starcitygames.com/feed/', "/assets/scg_logo.jpg"),
-        array('http://staging.mtgcommander.net/index.php/feed/', "/assets/Logo-Design-small.png"),
+        array('https://magic.wizards.com/en/rss/rss.xml?tags=Commander&amp;lang=en',
+              '/assets/1200px-Wizards_of_the_Coast_logo.svg.png', 'default_processor'),
+        array('https://www.coolstuffinc.com/articles_feed.rss', '/assets/csi_logo.jpg', 'default_processor'),
+        array('https://articles.edhrec.com/feed/', '/assets/edhrec_logo.png', 'edhrec_processor'),
+        array('http://www.channelfireball.com/feed/', '/assets/cfb_logo.png', 'default_processor'),
+        array('https://articles.starcitygames.com/feed/', '/assets/scg_logo.jpg', 'default_processor'),
+        array('http://staging.mtgcommander.net/index.php/feed/', '/assets/Logo-Design-small.png', 'default_processor'),
     );
 
     foreach ($sites as $key => $siteInfo) {
@@ -56,9 +99,6 @@ function create_feed_item_array()
         $xmlDoc->load($siteInfo[0]);
         if (sizeOf(libxml_get_errors()) > 0) {
             libxml_clear_errors();
-            if ($COMMANDER_RSS_DEBUG) {
-                $output .= "ERROR: " . libxml_get_errors();
-            }
             continue;
         }
 
@@ -66,44 +106,13 @@ function create_feed_item_array()
         $channelTitle = $xmlDoc->getElementsByTagName('title');
 
         foreach ($xmlFeedItem as $key => $node) {
-            $item = array();
+            // Invoke per-feed processing
+            $item = call_user_func($siteInfo[2], $node, $channelTitle);
+            if (is_null($item)) {
+                continue;
+            }
             $item['imageURL'] = $siteInfo[1];
-            $title = $node->getElementsByTagName('title')->item(0)->childNodes->item(0)->nodeValue;
-            if (sizeOf($siteInfo) > 2) {
-                $item['title'] = call_user_func($siteInfo[2], $title);
-            } else {
-                $item['title'] = $title;
-            }
-            $item['link'] = $node->getElementsByTagName('link')->item(0)->childNodes->item(0)->nodeValue;
-            $desc = $node->getElementsByTagName('description')->item(0)->nodeValue;
-
-            // if (strlen($desc) > 330) {
-            //     $item['desc'] = substr($desc, 0, 327);
-            //     $item['desc'] .= "[...]";
-            // } else {
-            $item['desc'] = $desc;
-            // }
-
-            $pubDate = $node->getElementsByTagName('pubDate')->length;
-            if ($pubDate > 0) {
-                $item['pub_date'] = substr($node->getElementsByTagName('pubDate')->item(0)->nodeValue, 0, 16);
-                $item['sort_date'] = strtotime($node->getElementsByTagName('pubDate')->item(0)->nodeValue);
-            } else if ($xmlDoc->getElementsByTagName('pubDate')->length > 0) {
-                //Not sure if this is ever hit now?
-                $item['pub_date'] = substr($xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue, 0, 16);
-                $item['sort_date'] = strtotime($xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue);
-            }
-
-
-            $creator = $node->getElementsByTagName('dc:creator')->length;
-            if ($creator > 0) {
-                $item['creator'] = $node->getElementsByTagName('dc:creator')->item(0)->nodeValue;
-            }
-            $item['source'] = $channelTitle->item(0)->nodeValue;
-
-            if (feedFilter($title) || feedFilter($item['desc']) || feedFilter($item['source'])) {
-                array_push($feedItems, $item);
-            }
+            array_push($feedItems, $item);
         }
     }
 
