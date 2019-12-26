@@ -70,3 +70,9 @@ a:hover {
     text-decoration: none;
 }
 
+.wp-block-separator{ 
+    max-width: 100px;
+    margin: 26.4px 45%;
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 1px;
+}
