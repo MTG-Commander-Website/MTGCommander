@@ -49,7 +49,11 @@ function default_processor($node, $channelTitle) {
     if ($pubDate > 0) {
         $item['pub_date'] = substr($node->getElementsByTagName('pubDate')->item(0)->nodeValue, 0, 16);
         $item['sort_date'] = strtotime($node->getElementsByTagName('pubDate')->item(0)->nodeValue);
-    } 
+    } else if ($xmlDoc->getElementsByTagName('pubDate')->length > 0) {
+        //Not sure if this is ever hit now?
+        $item['pub_date'] = substr($xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue, 0, 16);
+        $item['sort_date'] = strtotime($xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue);
+    }
 
     $creator_tags = $node->getElementsByTagName('creator');
     foreach ($creator_tags as $tag) {
