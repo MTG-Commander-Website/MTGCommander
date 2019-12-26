@@ -49,7 +49,7 @@ function default_processor($node, $channelTitle) {
     if ($pubDate > 0) {
         $item['pub_date'] = substr($node->getElementsByTagName('pubDate')->item(0)->nodeValue, 0, 16);
         $item['sort_date'] = strtotime($node->getElementsByTagName('pubDate')->item(0)->nodeValue);
-    }
+    } 
 
     $creator_tags = $node->getElementsByTagName('creator');
     foreach ($creator_tags as $tag) {
@@ -124,6 +124,42 @@ function sort_feed_by_date($feedItems)
     return $feedItems;
 }
 
+function generate_feed_wp_dom($feedItems)
+{
+    $output = '<div class="rss-feed">';
+    $urlPrefix = get_site_url();
+    $artRandomizerSeed = 0;
+    foreach ($feedItems as $item) {
+        $creator = "";
+        $pubDate = "";
+
+        if (array_key_exists('creator', $item)) {
+            $creator = '<span class="byline"><span class="author vcard">' . $item['creator'] . '</span></span>';
+        }
+
+        $output .='<article class="post type-post status-publish format-standard has-post-thumbnail hentry">';
+        $output .='<a class="post-thumbnail feed-logo" href="' .  $item['link'] . '" title="' . $item['title'] . '" aria-hidden="true">
+                   <img src="' . $urlPrefix . $item['imageURL'] . '" class="attachment-post-thumbnail size-post-thumbnail wp-post-image"/>
+                   </a>';
+        $output .= '<header class="entry-header">';
+        $output .= '<h1 class="entry-title">'
+                   .'<a href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a>'
+                   .'</h1>';
+        error_log("Foo");
+        $output .= '<div class="entry-meta">'
+                      . '<span class="entry-date"><a href="' . $item['link'] .'">'
+                      . '<time class="entry-date">' . $item['pub_date'] . '</time></a></span>'
+                      . '<span class="byline"><span class="author vcard">'  . $item['source'] . '</span></span>'
+                  .' </div>';
+        //$output .= ' </div>';
+        $output .= "</header>";
+        $output .= '<div class="entry-content"> <p>' . $item['desc'] . '</p></div>';
+        $output .= '</article>';
+    }
+    $output .= '</div>';
+    return $output;
+}
+
 function generate_feed_dom($feedItems)
 {
     $output = '<div class="rss-feed">';
@@ -133,26 +169,28 @@ function generate_feed_dom($feedItems)
         $creator = "";
         $pubDate = "";
 
-        if (array_key_exists('creator', $item) != null) {
-            $creator = '<span class="byline"><span class="author vcard">' . $item['creator'] . '</span>';
+        if (array_key_exists('creator', $item)) {
+            $creator = '<span class="byline"><span class="author vcard">' . $item['creator'] . '</span></span>';
         }
 
-        $output .='<article class="post type-post status-publish format-standard has-post-thumbnail hentry">
-                <a class="post-thumbnail feed-logo" href="' . $item['link'] . '" title="' . $item['title'] . '" aria-hidden="true">
-                <img src="' . $urlPrefix . $item['imageURL'] . '" class="attachment-post-thumbnail size-post-thumbnail">        
-            </a>
-            <header class="entry-header">
-                <h1 class="entry-title"><a href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a></h1>
-                <div class="entry-meta">
-                    <span class="entry-date"><a href="' . $item['link'] . '" title="' . $item['title'] . '"><time class="entry-date">' . $item['pub_date'] . '</time></a></span>'
-                    . $creator .
-                    '<span class="byline">' . $item['source'] . '</span>
-                        </div>
-            </header>
-                <div class="entry-header">
-                        <p>' . $item['desc'] . '</p>
-                </div>
-        </article>';
+        $output .='<article class="post type-post status-publish format-standard has-post-thumbnail hentry">';
+        $output .='<a class="post-thumbnail feed-logo" href="' .  $item['link'] . '" title="' . $item['title'] . '" aria-hidden="true">
+                   <img src="' . $urlPrefix . $item['imageURL'] . '" class="attachment-post-thumbnail size-post-thumbnail wp-post-image">
+                   </a>';
+        $output .= '<header class="entry-header">';
+        $output .= '<div class="entry-meta">'
+                      .'<a href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a>'
+                      .'</div>';
+        $output .= '<div class="entry-meta">'
+                      . $creator
+                      . '<span class="entry-date"><time class="entry-date">'
+		      . '<a href="' . $item['link'] .'">' . $item['pub_date'] . '</a>'
+                      . '</time></span>'
+                      . '<span class="byline">'  . $item['source'] . '</span>'
+                  .' </div>';
+        //$output .= ' </div>';
+        $output .= '<div class="entry-content"> <p>' . $item['desc'] . '</p></div>';
+        $output .= '</article>';
     }
     $output .= '</div>';
     return $output;
