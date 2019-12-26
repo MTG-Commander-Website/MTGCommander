@@ -19,7 +19,6 @@ wp-content/plugins/hello.php
 -shoeKey
 shoeKey.ppk
 shoeKey.pub
-*.txt
 Non-webContent/untitled_page.png
 *.epgz
 assets/rules.html
@@ -49,3 +48,4 @@ wp-activate.php
 index.php
 customStyle.css
 wp-includes/*
+license.txt

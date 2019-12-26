@@ -1,0 +1,13 @@
+To install the commander website fresh:
+
+1. Install Wordpress - https://wordpress.org/download/
+2. Install Plugins (Download and save to the plugins folder in wp-content:
+	a: https://wordpress.org/plugins/magic-the-gathering-card-tooltips/
+	b: https://wordpress.org/plugins/mtg-utilities/
+	c: https://wordpress.org/plugins/simple-post-redirect/
+	d: https://wordpress.org/plugins/wp-crontrol/
+3. Install wordpress theme - https://wordpress.org/themes/twentyfourteen/
+4. Install Commander custom plugin from GIT repo
+5. Create a PAGE in wordpress named Rules and another named Banned-List and publish them.
+(this is how the commander custom plugin generates the static rules page)
+6. copy CmdrCustomCSS.css text into the custom css of wordpress under additional styles.
