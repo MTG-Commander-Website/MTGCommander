@@ -49,10 +49,6 @@ function default_processor($node, $channelTitle) {
     if ($pubDate > 0) {
         $item['pub_date'] = substr($node->getElementsByTagName('pubDate')->item(0)->nodeValue, 0, 16);
         $item['sort_date'] = strtotime($node->getElementsByTagName('pubDate')->item(0)->nodeValue);
-    } else if ($xmlDoc->getElementsByTagName('pubDate')->length > 0) {
-        //Not sure if this is ever hit now?
-        $item['pub_date'] = substr($xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue, 0, 16);
-        $item['sort_date'] = strtotime($xmlDoc->getElementsByTagName('pubDate')->item(0)->nodeValue);
     }
 
     $creator_tags = $node->getElementsByTagName('creator');
@@ -147,7 +143,7 @@ function generate_feed_dom($feedItems)
             </a>
             <header class="entry-header">
                 <h1 class="entry-title"><a href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a></h1>
-                        <div class="entry-meta">
+                <div class="entry-meta">
                     <span class="entry-date"><a href="' . $item['link'] . '" title="' . $item['title'] . '"><time class="entry-date">' . $item['pub_date'] . '</time></a></span>'
                     . $creator .
                     '<span class="byline">' . $item['source'] . '</span>
