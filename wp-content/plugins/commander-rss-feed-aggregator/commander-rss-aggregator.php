@@ -227,8 +227,8 @@ function feedFilter($string)
 function generateStaticRulesPage()
 {
     global $wpdb;
-    $bannedList = '<link rel="stylesheet" type="text/css" href="staticStyles.css">' . $wpdb->get_var('SELECT post_content FROM `wp_posts` WHERE post_name = "banned-list" and post_status != "trash"');
-    $rules = '<link rel="stylesheet" type="text/css" href="staticStyles.css">' . $wpdb->get_var('SELECT post_content FROM `wp_posts` WHERE post_name = "rules" and post_status != "trash"');
+    $bannedList = '<link rel="stylesheet" type="text/css" href="staticStyles.css"><h1>Banned List</h1>' . $wpdb->get_var('SELECT post_content FROM `wp_posts` WHERE post_name = "banned-list" and post_status != "trash"');
+    $rules = '<link rel="stylesheet" type="text/css" href="staticStyles.css"><h1>Rules</h1>' . $wpdb->get_var('SELECT post_content FROM `wp_posts` WHERE post_name = "rules" and post_status != "trash"');
 
     $bannedListPage = fopen(ABSPATH . "assets/banned-list.html", "w");
     $rulesPage = fopen(ABSPATH . "assets/rules.html", "w");
