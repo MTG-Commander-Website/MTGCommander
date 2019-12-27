@@ -182,9 +182,9 @@ function generate_feed_dom($feedItems)
                    <img src="' . $urlPrefix . $item['imageURL'] . '" class="attachment-post-thumbnail size-post-thumbnail wp-post-image">
                    </a>';
         $output .= '<header class="entry-header">';
-        $output .= '<div class="entry-meta">'
+        $output .= '<h1 class="entry-title">'
                       .'<a href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a>'
-                      .'</div>';
+                      .'</h1>';
         $output .= '<div class="entry-meta">'
                       . $creator
                       . '<span class="entry-date"><time class="entry-date">'
