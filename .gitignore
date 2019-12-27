@@ -10,6 +10,8 @@ wp-content/uploads/
 wp-content/mu-plugins/
 wp-content/wp-cache-config.php
 wp-content/plugins/hello.php
+wp-content/themes/*
+wp-content/plugins/*
 
 /.htaccess
 /readme.html
@@ -25,12 +27,7 @@ assets/rules.html
 assets/banned-list.html
 assets/feed.html
 
-wp-content/themes/*
-wp-content/plugins/magic-the-gathering-card-tooltips/*
-wp-content/plugins/mtg-utilities/*
-wp-content/plugins/wp-crontrol/*
 wp-admin
-wp-content/plugins/index.php
 
 xmlrpc.php
 wp-trackback.php

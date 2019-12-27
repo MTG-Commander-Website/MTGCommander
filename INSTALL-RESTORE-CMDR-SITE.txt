@@ -8,6 +8,12 @@ To install the commander website fresh:
 	d: https://wordpress.org/plugins/wp-crontrol/
 3. Install wordpress theme - https://wordpress.org/themes/twentyfourteen/
 4. Install Commander custom plugin from GIT repo
+    cd webroot/
+    git init
+    git remote add origin git@github.com:MTG-Commander-Website/MTGCommander
+    git fetch origin (?)
+    git checkout origin/master -ft ?
 5. Create a PAGE in wordpress named Rules and another named Banned-List and publish them.
 (this is how the commander custom plugin generates the static rules page)
 6. copy CmdrCustomCSS.css text into the custom css of wordpress under additional styles.
+7. Restore the wp-config.php from backup (primarily password, upload methods, ?)
