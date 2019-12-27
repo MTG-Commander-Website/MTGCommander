@@ -1,38 +1,41 @@
-<style>
-
-.rss-item-wrapper{
-	  display: flex;
-  flex-wrap: nowrap;
-	min-height: 275px;
+.site{ 
+	margin: 0 auto; 
+	max-width: 100%;
 }
 
-.rss_item_image{
-width: 200px;
+.site-header {
+  max-width: 100%;	
 }
 
-.rss-title {
-	float: right;
-	width: 100%;
-	word-wrap: break-word;
+.page-id-29 .entry-header{
+	margin: 0 !important;
+	max-width: 100% !important;
 }
 
-.rss-desc {
-	float: right;
-	margin-bottom: 5px;
-	width: 100%;
-	padding-left: 10px;
-	word-wrap: break-word;
+.page-id-29 .entry-content{
+	margin: 0 !important;
+	max-width: 100% !important;
+	padding: 0 !important;
 }
 
-.rss-image-container{
-	display: flex;
-  flex-direction: column;
-  text-align: center;	
-	    flex-shrink: 0;
-	padding-right: 15px;
+.wp-post-image {
+  width:100%;
+}
+.feed-logo {
+	max-width: 150px;
+	max-height: 130px;
+	display:  block;
+	background: #FFF;
 }
 
-.rss-desc img {
-	display: none;
+.rss-feed>.post {
+	display:flex;
 }
-</style>
+
+.entry-title {
+	display: inline;
+}
+
+.byline {
+	display: inline;
+}
