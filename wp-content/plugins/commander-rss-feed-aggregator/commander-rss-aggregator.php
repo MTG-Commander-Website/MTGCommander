@@ -149,7 +149,6 @@ function generate_feed_wp_dom($feedItems)
         $output .= '<h1 class="entry-title">'
                    .'<a href="' . $item['link'] . '" title="' . $item['title'] . '">' . $item['title'] . '</a>'
                    .'</h1>';
-        error_log("Foo");
         $output .= '<div class="entry-meta">'
                       . '<span class="entry-date"><a href="' . $item['link'] .'">'
                       . '<time class="entry-date">' . $item['pub_date'] . '</time></a></span>'
