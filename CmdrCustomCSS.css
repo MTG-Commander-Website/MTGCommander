@@ -35,3 +35,10 @@
 .byline {
 	display: inline;
 }
+
+@media screen and (max-width: 680px) {
+	figure, img {
+		width: 100%;
+	}
+	
+}
