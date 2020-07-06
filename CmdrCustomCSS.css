@@ -7,15 +7,10 @@
   max-width: 100%;	
 }
 
-.page-id-29 .entry-header{
+.site-content .entry-header, 
+.site-content .entry-content, .site-content .entry-summary, .site-content .entry-meta, .page-content {
 	margin: 0 !important;
 	max-width: 100% !important;
-}
-
-.page-id-29 .entry-content{
-	margin: 0 !important;
-	max-width: 100% !important;
-	padding: 0 !important;
 }
 
 .wp-post-image {
@@ -26,6 +21,7 @@
 	max-height: 130px;
 	display:  block;
 	background: #FFF;
+	height: 100%;
 }
 
 .rss-feed>.post {
@@ -38,4 +34,11 @@
 
 .byline {
 	display: inline;
+}
+
+@media screen and (max-width: 680px) {
+	figure, img {
+		width: 100%;
+	}
+	
 }
